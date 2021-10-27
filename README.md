@@ -64,6 +64,8 @@ $ curl -XPOST -H'Content-type: application/json' http://localhost:2288/rpc -d'{"
 
 ```
 import type methods from "./methods";
+import { createZodJsonRpcClient } from "zod-json-rpc/lib/client";
+
 const request = createZodJsonRpcClient<typeof methods>(
   `http://localhost:2288/rpc`
 );
@@ -207,4 +209,5 @@ pub struct HelloRet {
 ## Future work
 
 - Ideally, this should be split into separate packages for the client and server to minimize the number of dependencies that need to be installed.
+- Support multiple lazy loaded namespaces / apps in a single server.
 - The server CLI should integrate with `ts-node-dev` for automatic reloading
