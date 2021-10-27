@@ -215,6 +215,18 @@ pub struct HelloRet {
 }
 ```
 
+## Running a server in a unit test
+
+```
+await withTestServer(createZodJsonRpcServer(methods), async (port) => {
+    const request = createZodJsonRpcClient<typeof methods>(
+      `http://localhost:${port}/rpc`
+    );
+    const response = await request("hello", { name: "pete" });
+    expect(response.message).toBe("hello, pete!");
+});
+```
+
 ## Future work
 
 - Ideally, this should be split into separate packages for the client and server to minimize the number of dependencies that need to be installed.

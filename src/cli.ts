@@ -20,10 +20,9 @@ async function main() {
 
   const app = express();
   app.use(cors());
-  createZodJsonRpcServer(
-    (await import(resolve(module))).default,
-    app,
-    endpoint
+  app.use(
+    endpoint,
+    createZodJsonRpcServer((await import(resolve(module))).default)
   );
 
   app.listen(port);

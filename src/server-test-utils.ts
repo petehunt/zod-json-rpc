@@ -3,7 +3,7 @@ import getPort from "get-port";
 import { Server } from "http";
 import { createHttpTerminator } from "http-terminator";
 
-export async function withServer<T>(
+export async function withTestServer<T>(
   handler: express.RequestHandler,
   callback: (port: number) => Promise<T>
 ): Promise<T> {

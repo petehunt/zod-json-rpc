@@ -112,10 +112,9 @@ function cached<T>(cb: () => T) {
 }
 
 export function createZodJsonRpcServer(
-  methods: Methods | (() => Methods) | (() => Promise<Methods>),
-  app: express.IRouter = express(),
-  endpoint = "/rpc"
-) {
+  methods: Methods | (() => Methods) | (() => Promise<Methods>)
+): express.IRouter {
+  const app = express.Router();
   app.use(express.json());
 
   const getMethods = cached(async () => {
@@ -134,20 +133,8 @@ export function createZodJsonRpcServer(
     return server;
   });
 
-  app.post(endpoint, (req, res, next) => {
-    (async () => {
-      const server = await getServer();
-      const jsonRpcResponse = await server.receive(req.body);
-      if (jsonRpcResponse) {
-        res.json(jsonRpcResponse);
-      } else {
-        res.sendStatus(204);
-      }
-    })().catch((e) => next(e));
-  });
-
   // convenience method for curling
-  app.get(`${endpoint}/schema`, (req, res, next) => {
+  app.get("/schema", (req, res, next) => {
     (async () => {
       const methods = await getMethods();
       const getSchema = methods["server.getSchema"];
@@ -160,6 +147,18 @@ export function createZodJsonRpcServer(
         pattern: req.query.pattern as string,
       });
       res.end(source);
+    })().catch((e) => next(e));
+  });
+
+  app.post("/", (req, res, next) => {
+    (async () => {
+      const server = await getServer();
+      const jsonRpcResponse = await server.receive(req.body);
+      if (jsonRpcResponse) {
+        res.json(jsonRpcResponse);
+      } else {
+        res.sendStatus(204);
+      }
     })().catch((e) => next(e));
   });
 

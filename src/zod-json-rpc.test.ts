@@ -1,12 +1,14 @@
 import fetch from "isomorphic-unfetch";
-import { withServer } from "./server-test-utils";
+import { withTestServer } from "./server-test-utils";
 import { createZodJsonRpcServer } from "./server";
 import { createZodJsonRpcClient } from "./client";
+import { Router } from "express";
 
 test("it works", async () => {
   const { default: methods } = await import("./example-server");
-
-  await withServer(createZodJsonRpcServer(methods), async (port) => {
+  const router = Router();
+  router.use("/rpc", createZodJsonRpcServer(methods));
+  await withTestServer(router, async (port) => {
     const request = createZodJsonRpcClient<typeof methods>(
       `http://localhost:${port}/rpc`
     );
