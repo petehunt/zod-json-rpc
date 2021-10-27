@@ -142,10 +142,14 @@ export function createZodJsonRpcServer(
         res.sendStatus(404);
         return;
       }
-      const { source } = await getSchema.func({
-        lang: req.query.lang as string,
-        pattern: req.query.pattern as string,
-      });
+      const { source } = await getSchema.func(
+        {
+          lang: req.query.lang as string,
+          pattern: req.query.pattern as string,
+        },
+        req,
+        res
+      );
       res.end(source);
     })().catch((e) => next(e));
   });
