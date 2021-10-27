@@ -38,7 +38,7 @@ You can serve your app via the API:
 
 ```
 import { createZodJsonRpcServer } from "zod-json-rpc";
-import methods from "./methods"; // defined above
+import methods from "./methods";
 
 const expressApp = createZodJsonRpcServer(methods);
 expressApp.listen(8000);
@@ -55,7 +55,7 @@ You can remove the `--transpile` flag if you are precompiling your TypeScript ah
 ## Calling the API via curl
 
 ```
-$ curl -XPOST -H'Content-type: application/json' http://localhost:2288/rpc -d'{"id": "1", "jsonrpc":"2.0", "method": "hello", {"name": "Pete"}}'"Pete"}]}'
+$ curl -XPOST -H'Content-type: application/json' http://localhost:2288/rpc -d'{"id": "1", "jsonrpc":"2.0", "method": "hello", "params": {"name": "Pete"}}'
 
 {"jsonrpc":"2.0","id":"1","result":{"message":"hello, Pete!"}}
 ```
