@@ -60,6 +60,15 @@ $ curl -XPOST -H'Content-type: application/json' http://localhost:2288/rpc -d'{"
 {"jsonrpc":"2.0","id":"1","result":{"message":"hello, Pete!"}}
 ```
 
+## Calling the API via `jsonrpc2.0-cli`
+
+```
+$ npx jsonrpc2.0-cli --url http://localhost:2288/rpc --method hello --arg '{name: "pete"}' --pretty
+{
+  "message": "hello, pete!"
+}
+```
+
 ## Calling the API via the typesafe TypeScript client
 
 ```
