@@ -155,7 +155,7 @@ export function createZodJsonRpcServer(
     })().catch((e) => next(e));
   });
 
-  app.post("/", (req, res, next) => {
+  app.post("*", (req, res, next) => {
     (async () => {
       const server = await getServer();
       const jsonRpcResponse = await server.receive(req.body);
