@@ -1,11 +1,14 @@
 import { JSONRPCClient } from "json-rpc-2.0";
 import { z, ZodObject } from "zod";
 import { Methods } from "./shared";
-import fetch from "isomorphic-unfetch";
+import unfetch from "isomorphic-unfetch";
 
-export function createZodJsonRpcClient<TMethods extends Methods>(url: string) {
+export function createZodJsonRpcClient<TMethods extends Methods>(
+  url: string,
+  fetchFn: typeof fetch = unfetch
+) {
   const client: JSONRPCClient = new JSONRPCClient((jsonRPCRequest) =>
-    fetch(url, {
+    fetchFn(url, {
       method: "POST",
       headers: {
         "content-type": "application/json",
