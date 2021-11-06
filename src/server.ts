@@ -3,7 +3,6 @@ import { ZodRawShape } from "zod";
 import invariant from "tiny-invariant";
 import { Methods, TypedFunction, TypedFunctionImpl } from "./shared";
 import { z } from "zod";
-import { Option, Some, None } from "ts-results";
 
 export function method() {
   return {
@@ -102,12 +101,14 @@ export function withIntrospection<T extends Methods>(
 }
 
 function cached<T>(cb: () => T) {
-  let value: Option<T> = None;
+  let value: any;
+  let isCached = false;
   return () => {
-    if (value.none) {
-      value = Some(cb());
+    if (!isCached) {
+      value = cb();
+      isCached = true;
     }
-    return value.unwrap();
+    return value;
   };
 }
 
